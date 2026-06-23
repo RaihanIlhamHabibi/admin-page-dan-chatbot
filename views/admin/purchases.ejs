@@ -1,0 +1,77 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <span class="badge">&#128179; Database Pembelian</span>
+    <h1>Data Pembelian</h1>
+    <p>Daftar transaksi pembelian dan fitur cancel pembelian oleh admin toko.</p>
+  </div>
+  <a href="/admin/purchases/create" class="btn primary">+ Input Pembelian</a>
+</div>
+
+<% if (success) { %>
+  <div class="alert success">&#10003; <%= success %></div>
+<% } %>
+<% if (error) { %>
+  <div class="alert error">&#10007; <%= error %></div>
+<% } %>
+
+<div class="card table-card">
+  <% if (purchases.length === 0) { %>
+    <div class="empty-state">
+      <div class="empty-icon">&#128179;</div>
+      <h3>Belum ada pembelian</h3>
+      <p>Silakan input pembelian baru terlebih dahulu.</p>
+      <a href="/admin/purchases/create" class="btn primary" style="margin-top: 16px;">+ Input Pembelian</a>
+    </div>
+  <% } else { %>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice</th>
+            <th>Pembeli</th>
+            <th>Produk</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Tanggal</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% purchases.forEach((purchase) => { %>
+            <tr>
+              <td><span class="code-pill"><%= purchase.invoice_number %></span></td>
+              <td><strong><%= purchase.buyer_name %></strong></td>
+              <td>
+                <strong><%= purchase.product_name %></strong><br>
+                <small><%= purchase.product_code %></small>
+              </td>
+              <td><%= purchase.quantity %> pcs</td>
+              <td><strong><%= formatCurrency(purchase.total_price) %></strong></td>
+              <td>
+                <span class="status <%= purchase.status === 'COMPLETED' ? 'completed' : 'cancelled' %>">
+                  <%= purchase.status === 'COMPLETED' ? 'Berhasil' : 'Dibatalkan' %>
+                </span>
+              </td>
+              <td class="muted"><%= purchase.purchase_date %></td>
+              <td>
+                <% if (purchase.status === 'COMPLETED') { %>
+                  <form method="POST" action="/admin/purchases/<%= purchase.id %>/cancel"
+                    onsubmit="return confirm('Yakin ingin cancel pembelian ini?\nStok produk akan dikembalikan.');">
+                    <button type="submit" class="btn danger small">&#10007; Cancel</button>
+                  </form>
+                <% } else { %>
+                  <span class="muted" style="font-size: 13px;">—</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

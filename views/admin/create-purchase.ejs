@@ -1,0 +1,225 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <span class="badge">🛒 Input Pembelian</span>
+    <h1>Tambah Data Pembelian</h1>
+    <p>Isi form berikut untuk mencatat transaksi pembelian baru.</p>
+  </div>
+  <a href="/admin/purchases" class="btn secondary">← Kembali</a>
+</div>
+
+<% if (error) { %>
+  <div class="alert error">⚠️ <%= error %></div>
+<% } %>
+
+<div style="display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start;">
+
+  <!-- FORM UTAMA -->
+  <section class="card form-card" style="max-width: 100%;">
+
+    <div class="form-section-title">Informasi Pembeli</div>
+
+    <form method="POST" action="/admin/purchases" id="purchaseForm">
+
+      <div class="form-group">
+        <label for="buyer_name">👤 Nama Pembeli</label>
+        <input
+          type="text"
+          id="buyer_name"
+          name="buyer_name"
+          placeholder="Contoh: Budi Santoso"
+          autocomplete="off"
+          required
+        >
+        <span class="field-hint">Masukkan nama lengkap pembeli.</span>
+      </div>
+
+      <div class="form-divider"></div>
+      <div class="form-section-title">Detail Produk</div>
+
+      <div class="form-group">
+        <label for="product_id">📦 Pilih Produk</label>
+        <select id="product_id" name="product_id" required onchange="updateProductInfo(this)">
+          <option value="">-- Pilih Produk --</option>
+          <% products.forEach((product) => { %>
+            <option
+              value="<%= product.id %>"
+              data-price="<%= product.price %>"
+              data-stock="<%= product.quantity %>"
+              data-code="<%= product.product_code %>"
+              data-name="<%= product.product_name %>"
+              data-category="<%= product.category %>"
+              <%= product.quantity <= 0 ? 'disabled' : '' %>
+            >
+              <%= product.product_code %> — <%= product.product_name %>
+              <%= product.quantity <= 0 ? '(Stok Habis)' : `| Stok: ${product.quantity}` %>
+            </option>
+          <% }) %>
+        </select>
+        <span class="field-hint">Produk dengan stok habis tidak dapat dipilih.</span>
+      </div>
+
+      <!-- Info produk dinamis -->
+      <div id="productInfoBox" class="product-info-box" style="display:none;">
+        <div class="product-info-row">
+          <span>Kode Produk</span>
+          <strong id="infoCode">—</strong>
+        </div>
+        <div class="product-info-row">
+          <span>Kategori</span>
+          <strong id="infoCategory">—</strong>
+        </div>
+        <div class="product-info-row">
+          <span>Harga Satuan</span>
+          <strong id="infoPrice">—</strong>
+        </div>
+        <div class="product-info-row">
+          <span>Stok Tersedia</span>
+          <strong id="infoStock">—</strong>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">🔢 Jumlah Pembelian</label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          min="1"
+          placeholder="Contoh: 2"
+          oninput="updateTotal()"
+          required
+        >
+        <span class="field-hint" id="stockHint">Masukkan jumlah unit yang dibeli.</span>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Total harga preview -->
+      <div id="totalBox" style="display:none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#15803d; font-weight:600; font-size:14px;">💰 Estimasi Total Harga</span>
+          <strong id="totalPrice" style="font-size:20px; font-weight:800; color:#15803d; letter-spacing:-0.5px;">Rp 0</strong>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/admin/purchases" class="btn secondary">Batal</a>
+        <button type="submit" class="btn primary">💾 Simpan Pembelian</button>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- PANEL KANAN: PANDUAN -->
+  <aside style="display: flex; flex-direction: column; gap: 16px; position: sticky; top: 88px;">
+
+    <div class="card" style="padding: 20px;">
+      <div style="font-size:28px; margin-bottom:10px;">📋</div>
+      <h3 style="font-size:14.5px; font-weight:700; margin:0 0 10px;">Panduan Input</h3>
+      <ul style="padding-left:18px; color:var(--muted); font-size:13px; line-height:1.9; margin:0;">
+        <li>Isi nama lengkap pembeli</li>
+        <li>Pilih produk dari daftar tersedia</li>
+        <li>Masukkan jumlah &le; stok tersedia</li>
+        <li>Total harga dihitung otomatis</li>
+        <li>Stok berkurang setelah simpan</li>
+      </ul>
+    </div>
+
+    <div class="card" style="padding: 20px; background: #fffbeb; border-color: #fde68a;">
+      <div style="font-size:22px; margin-bottom:8px;">⚠️</div>
+      <h3 style="font-size:13.5px; font-weight:700; margin:0 0 8px; color:#92400e;">Perhatian</h3>
+      <p style="font-size:12.5px; color:#a16207; margin:0; line-height:1.7;">
+        Pembelian yang sudah tersimpan hanya bisa dibatalkan melalui fitur <strong>Cancel</strong> di halaman daftar pembelian.
+      </p>
+    </div>
+
+    <div class="card" style="padding: 20px;">
+      <div style="font-size:22px; margin-bottom:8px;">📦</div>
+      <h3 style="font-size:13.5px; font-weight:700; margin:0 0 8px;">Total Produk Aktif</h3>
+      <p style="font-size:28px; font-weight:800; color:var(--primary); margin:0; letter-spacing:-1px;">
+        <%= products.filter(p => p.quantity > 0).length %>
+        <span style="font-size:13px; font-weight:500; color:var(--muted);">/ <%= products.length %> produk</span>
+      </p>
+    </div>
+
+  </aside>
+
+</div>
+
+<script>
+  function formatRupiah(number) {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(number);
+  }
+
+  function updateProductInfo(select) {
+    const option = select.options[select.selectedIndex];
+    const box = document.getElementById('productInfoBox');
+
+    if (!option.value) {
+      box.style.display = 'none';
+      document.getElementById('totalBox').style.display = 'none';
+      document.getElementById('quantity').max = '';
+      document.getElementById('stockHint').textContent = 'Masukkan jumlah unit yang dibeli.';
+      return;
+    }
+
+    const price    = parseFloat(option.dataset.price);
+    const stock    = parseInt(option.dataset.stock);
+    const code     = option.dataset.code;
+    const category = option.dataset.category;
+
+    document.getElementById('infoCode').textContent     = code;
+    document.getElementById('infoCategory').textContent = category;
+    document.getElementById('infoPrice').textContent    = formatRupiah(price);
+    document.getElementById('infoStock').textContent    = stock + ' pcs';
+    document.getElementById('stockHint').textContent    = `Maksimal ${stock} unit (sesuai stok).`;
+
+    box.style.display = 'block';
+
+    // Batasi qty sesuai stok
+    const qtyInput = document.getElementById('quantity');
+    qtyInput.max = stock;
+    if (parseInt(qtyInput.value) > stock) qtyInput.value = stock;
+
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const select   = document.getElementById('product_id');
+    const option   = select.options[select.selectedIndex];
+    const qty      = parseInt(document.getElementById('quantity').value) || 0;
+    const totalBox = document.getElementById('totalBox');
+
+    if (!option.value || qty <= 0) {
+      totalBox.style.display = 'none';
+      return;
+    }
+
+    const price = parseFloat(option.dataset.price);
+    const total = price * qty;
+
+    document.getElementById('totalPrice').textContent = formatRupiah(total);
+    totalBox.style.display = 'block';
+  }
+
+  // Validasi sebelum submit
+  document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+    const select  = document.getElementById('product_id');
+    const option  = select.options[select.selectedIndex];
+    const qty     = parseInt(document.getElementById('quantity').value);
+    const stock   = parseInt(option.dataset.stock);
+
+    if (qty > stock) {
+      e.preventDefault();
+      alert(`❌ Jumlah melebihi stok! Stok tersedia: ${stock} pcs`);
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %>

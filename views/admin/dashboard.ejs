@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <span class="badge">&#9783; Admin Page</span>
+    <h1>Dashboard Admin</h1>
+    <p>Ringkasan data produk, stok, dan pembelian toko.</p>
+  </div>
+  <a href="/admin/purchases/create" class="btn primary">+ Input Pembelian</a>
+</div>
+
+<section class="stats-grid">
+  <div class="stat-card">
+    <span>Total Produk</span>
+    <strong><%= stats.totalProducts %></strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Stok</span>
+    <strong><%= stats.totalStock %></strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Pembelian</span>
+    <strong><%= stats.totalPurchases %></strong>
+  </div>
+  <div class="stat-card">
+    <span>Berhasil</span>
+    <strong class="text-success"><%= stats.completedPurchases %></strong>
+  </div>
+  <div class="stat-card">
+    <span>Dicancel</span>
+    <strong class="text-danger"><%= stats.cancelledPurchases %></strong>
+  </div>
+</section>
+
+<section class="grid two-cols margin-top">
+  <article class="card feature-card">
+    <div class="card-icon blue">&#128230;</div>
+    <h2>Data Produk &amp; Stok</h2>
+    <p>Lihat 10 produk yang tersedia beserta jumlah stok masing-masing. Kamu juga bisa edit detail produk.</p>
+    <div class="tech-tags">
+      <span class="tech-tag">10 Produk</span>
+      <span class="tech-tag">Stok Real-time</span>
+    </div>
+    <a class="btn secondary" href="/admin/products">Lihat Produk &rarr;</a>
+  </article>
+  <article class="card feature-card">
+    <div class="card-icon teal">&#128179;</div>
+    <h2>Data Pembelian</h2>
+    <p>Kelola data pembelian, input transaksi baru, dan lakukan cancel. Stok otomatis dikembalikan saat cancel.</p>
+    <div class="tech-tags">
+      <span class="tech-tag">Invoice Otomatis</span>
+      <span class="tech-tag">Cancel &amp; Restock</span>
+    </div>
+    <a class="btn secondary" href="/admin/purchases">Lihat Pembelian &rarr;</a>
+  </article>
+</section>
+
+<%- include('../partials/footer') %>

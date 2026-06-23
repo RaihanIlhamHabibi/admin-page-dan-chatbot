@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <span class="badge">Database Produk & Stock Produk</span>
+    <h1>Data Produk & Stok</h1>
+    <p>Berikut adalah 10 produk awal beserta stok produk.</p>
+  </div>
+  <div class="page-actions">
+    <a href="/admin/products/create" class="btn secondary">Tambah Produk</a>
+    <a href="/admin/purchases/create" class="btn primary">Input Pembelian</a>
+  </div>
+</div>
+
+<% if (locals.success) { %>
+  <div class="alert success"><%= success %></div>
+<% } %>
+<% if (locals.error) { %>
+  <div class="alert error"><%= error %></div>
+<% } %>
+
+<div class="card table-card">
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Kode</th>
+          <th>Nama Produk</th>
+          <th>Kategori</th>
+          <th>Harga</th>
+          <th>Stok</th>
+          <th>Deskripsi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach((product, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><strong><%= product.product_code %></strong></td>
+            <td><%= product.product_name %></td>
+            <td><%= product.category %></td>
+            <td><%= formatCurrency(product.price) %></td>
+            <td>
+              <span class="stock-pill <%= product.quantity <= 5 ? 'danger' : '' %>">
+                <%= product.quantity %>
+              </span>
+            </td>
+            <td><%= product.description %></td>
+            <td>
+              <a href="/admin/products/edit/<%= product.id %>" class="btn small">Edit</a>
+              <form method="POST" action="/admin/products/<%= product.id %>/delete" class="inline-form" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+                <button type="submit" class="btn danger small">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

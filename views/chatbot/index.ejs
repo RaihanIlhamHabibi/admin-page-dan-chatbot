@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <span class="badge">
+      <i class="ti ti-robot"></i> Chatbot AI
+    </span>
+    <h1>Chatbot Sederhana</h1>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:8px;flex-wrap:wrap">
+      <span style="font-size:13px;color:#666">
+        <i class="ti ti-cpu"></i> Provider: <strong><%= aiConfig.provider %></strong>
+      </span>
+      <span style="font-size:13px;color:#666">
+        <i class="ti ti-versions"></i> Model: <strong><%= aiConfig.model %></strong>
+      </span>
+      <span style="font-size:13px;display:flex;align-items:center;gap:4px">
+        <span style="width:7px;height:7px;border-radius:50%;background:<%= aiConfig.configured ? '#1D9E75' : '#E24B4A' %>;display:inline-block"></span>
+        <strong><%= aiConfig.configured ? 'Siap digunakan' : 'Belum dikonfigurasi' %></strong>
+      </span>
+    </div>
+    <p style="margin-top:6px;font-size:12px;color:#999">
+      Konfigurasi dibaca dari file <code>.env</code>.
+      <% if (!aiConfig.configured) { %>
+        Set AI_PROVIDER dan API key di file <code>.env</code>.
+      <% } %>
+    </p>
+  </div>
+  <form method="POST" action="/chatbot/clear">
+    <button class="btn secondary" type="submit">
+      <i class="ti ti-trash"></i> Hapus Chat
+    </button>
+  </form>
+</div>
+
+<% if (locals.error) { %>
+  <div class="alert error"><%= error %></div>
+<% } %>
+
+<section class="chat-card">
+
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #eee;background:#f9fafb">
+    <div style="width:32px;height:32px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center">
+      <i class="ti ti-robot" style="color:#1d4ed8;font-size:16px"></i>
+    </div>
+    <div>
+      <p style="font-size:13px;font-weight:600;margin:0">AI Assistant</p>
+      <span style="font-size:11px;color:#888">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:<%= aiConfig.configured ? '#1D9E75' : '#ccc' %>;margin-right:4px;vertical-align:middle"></span>
+        <%= aiConfig.provider %> · <%= aiConfig.model %>
+      </span>
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <% if (chatHistory.length === 0) { %>
+      <div class="empty-chat" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:8px;text-align:center">
+        <div style="width:48px;height:48px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:4px">
+          <i class="ti ti-message-circle" style="font-size:22px;color:#1d4ed8"></i>
+        </div>
+        <h2 style="font-size:15px;font-weight:600">Mulai percakapan</h2>
+        <p style="font-size:13px;color:#888;max-width:280px">Tulis pertanyaan di bawah untuk mencoba chatbot.</p>
+        <% if (!aiConfig.configured) { %>
+          <p style="font-size:12px;color:#e24b4a">AI belum dikonfigurasi. Pastikan AI_PROVIDER dan API key sudah diisi.</p>
+        <% } else { %>
+          <p style="font-size:12px;color:#1D9E75"><strong><%= aiConfig.provider %></strong> sudah aktif. Kirim pesan untuk mencoba.</p>
+        <% } %>
+      </div>
+    <% } %>
+
+    <% chatHistory.forEach((chat) => { %>
+      <div style="display:flex;gap:8px;align-items:flex-end;<%= chat.role === 'user' ? 'flex-direction:row-reverse' : '' %>;margin-bottom:4px">
+        <div style="width:28px;height:28px;border-radius:50%;background:<%= chat.role === 'user' ? '#dcfce7' : '#dbeafe' %>;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ti-<%= chat.role === 'user' ? 'user' : 'robot' %>" style="font-size:13px;color:<%= chat.role === 'user' ? '#16a34a' : '#1d4ed8' %>"></i>
+        </div>
+        <div class="chat-bubble <%= chat.role === 'user' ? 'user' : 'bot' %>">
+          <p><%= chat.content %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <form class="chat-form" method="POST" action="/chatbot" style="display:flex;gap:8px;align-items:center;padding:12px 16px;border-top:1px solid #eee">
+    <input type="text" name="message" placeholder="Tulis pesan kamu..." autocomplete="off" required>
+    <button type="submit" class="btn primary">
+      <i class="ti ti-send"></i> Kirim
+    </button>
+  </form>
+
+</section>
+
+<%- include('../partials/footer') %>

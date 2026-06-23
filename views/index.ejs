@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div>
+    <span class="badge">Satu Repository</span>
+    <h1>Admin Page Pembelian & Chatbot AI</h1>
+    <p>
+      Project pretest ini dibuat menggunakan Node.js, Express.js, EJS, dan database SQL SQLite.
+      Aplikasi terdiri dari dua modul utama dalam satu repository.
+    </p>
+    <div class="hero-actions">
+      <a href="/admin" class="btn primary">Buka Admin Page</a>
+      <a href="/chatbot" class="btn secondary">Buka Chatbot AI</a>
+    </div>
+  </div>
+</section>
+
+<section class="grid two-cols">
+  <article class="card feature-card">
+    <h2>1. Admin Page Pembelian</h2>
+    <p>
+      Modul untuk melihat data produk, stok produk, input pembelian, dan cancel pembelian oleh admin toko.
+      Jika pembelian dicancel, stok produk otomatis dikembalikan.
+    </p>
+    <a href="/admin/products" class="text-link">Lihat Produk →</a>
+  </article>
+
+  <article class="card feature-card">
+    <h2>2. Chatbot AI</h2>
+    <p>
+      Modul chatbot sederhana yang dapat diintegrasikan dengan AI provider seperti Ollama, OpenAI, DeepSeek,
+      atau Gemini melalui konfigurasi file .env.
+    </p>
+    <a href="/chatbot" class="text-link">Coba Chatbot →</a>
+  </article>
+</section>
+
+<%- include('partials/footer') %>

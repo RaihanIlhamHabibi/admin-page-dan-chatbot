@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+	<div>
+		<span class="badge">Edit Produk</span>
+		<h1>Edit Produk</h1>
+		<p>Perbarui detail produk dan stok.</p>
+	</div>
+	<a href="/admin/products" class="btn secondary">Kembali</a>
+</div>
+
+<% if (error) { %>
+	<div class="alert error"><%= error %></div>
+<% } %>
+<% if (success) { %>
+	<div class="alert success"><%= success %></div>
+<% } %>
+
+<section class="card form-card">
+	<form method="POST" action="/admin/products/<%= product.id %>/update">
+		<div class="form-group">
+			<label for="product_code">Kode Produk</label>
+			<input type="text" id="product_code" name="product_code" value="<%= product.product_code %>" disabled>
+		</div>
+
+		<div class="form-group">
+			<label for="product_name">Nama Produk</label>
+			<input type="text" id="product_name" name="product_name" value="<%= product.product_name %>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="category">Kategori</label>
+			<input type="text" id="category" name="category" value="<%= product.category %>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="price">Harga</label>
+			<input type="number" id="price" name="price" value="<%= product.price %>" min="1" required>
+		</div>
+
+		<div class="form-group">
+			<label for="quantity">Stok</label>
+			<input type="number" id="quantity" name="quantity" value="<%= product.quantity %>" min="0" required>
+		</div>
+
+		<div class="form-group">
+			<label for="description">Deskripsi</label>
+			<textarea id="description" name="description" rows="4"><%= product.description %></textarea>
+		</div>
+
+		<button type="submit" class="btn primary full-width">Simpan Perubahan</button>
+	</form>
+</section>
+
+<%- include('../partials/footer') %>
