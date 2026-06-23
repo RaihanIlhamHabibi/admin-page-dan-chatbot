@@ -2,10 +2,11 @@
 
 Aplikasi ini adalah contoh pretest berbasis **Node.js**, **Express**, **EJS**, dan **SQLite** (menggunakan `sql.js`).
 
-Aplikasi ini memiliki dua fitur utama:
+Repository ini berisi dua fitur utama sesuai ketentuan pretest, yaitu:
 
-1. **Admin Produk & Pembelian**
-2. **Chatbot AI**
+1. Admin Page untuk input data pembelian dan cancel pembelian.
+
+2. Chatbot sederhana yang terintegrasi dengan AI.
 
 ---
 
