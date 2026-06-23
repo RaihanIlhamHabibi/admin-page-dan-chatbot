@@ -1,4 +1,4 @@
-# Pretest Node.js - Admin Pembelian dan Chatbot AI
+# Pretest Node.js - Admin Page Pembelian & Chatbot AI
 
 Aplikasi ini adalah contoh pretest berbasis **Node.js**, **Express**, **EJS**, dan **SQLite** (menggunakan `sql.js`).
 
