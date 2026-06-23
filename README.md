@@ -1,124 +1,192 @@
-# Pretest Node.js - Admin Page Pembelian & Chatbot AI
+# Pretest Node.js - Admin Pembelian dan Chatbot AI
 
-Aplikasi ini adalah contoh pretest berbasis **Node.js**, **Express**, **EJS**, dan **SQLite** (menggunakan `sql.js`).
+Project ini dibuat untuk memenuhi tugas pretest dengan ketentuan membuat aplikasi **Admin Page Pembelian** dan **Chatbot AI**.
 
-Repository ini berisi dua fitur utama sesuai ketentuan pretest, yaitu:
+Aplikasi ini dibangun menggunakan **Node.js**, **Express.js**, **EJS**, dan **SQLite menggunakan sql.js**. Untuk fitur chatbot, aplikasi ini terintegrasi dengan **Gemini API**.
 
-1. Admin Page untuk input data pembelian dan cancel pembelian.
+## Daftar Isi
 
-2. Chatbot sederhana yang terintegrasi dengan AI.
-
----
+* [Fitur Utama](#fitur-utama)
+* [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+* [Struktur Project](#struktur-project)
+* [Persyaratan](#persyaratan)
+* [Instalasi dan Menjalankan Project](#instalasi-dan-menjalankan-project)
+* [Konfigurasi Environment](#konfigurasi-environment)
+* [Rute Halaman](#rute-halaman)
+* [Database](#database)
+* [Alur Aplikasi](#alur-aplikasi)
+* [Catatan Penting](#catatan-penting)
 
 ## Fitur Utama
 
-### Admin Produk
+Project ini memiliki dua fitur utama sesuai ketentuan pretest:
 
-- Lihat daftar produk beserta stok.
-- Tambah produk baru.
-- Edit produk yang sudah ada.
-- Hapus produk.
+1. **Admin Page Pembelian**
+2. **Chatbot AI menggunakan Gemini API**
 
-### Pembelian
+### 1. Admin Produk
 
-- Input pembelian baru dengan invoice otomatis.
-- Pengurangan stok otomatis saat pembelian berhasil.
-- Cancel pembelian oleh admin.
-- Pengembalian stok otomatis saat pembelian dibatalkan.
+Fitur ini digunakan untuk mengelola data produk dan stok produk.
 
-### Chatbot AI
+Fitur yang tersedia:
 
-- Antarmuka chatbot sederhana.
-- Dukungan provider: `demo`, `ollama`, `openai`, `deepseek`, `gemini`.
-- Konfigurasi lewat `.env`.
-- Default `demo` agar aplikasi bisa dijalankan tanpa API key.
+* Menampilkan daftar produk
+* Menampilkan stok produk
+* Menambahkan produk baru
+* Mengedit data produk
+* Menghapus produk
 
----
+### 2. Pembelian
 
-## Teknologi
+Fitur ini digunakan untuk mengelola transaksi pembelian produk.
 
-- Node.js
-- Express
-- EJS
-- sql.js (SQLite)
-- dotenv
-- HTML / CSS / JavaScript
+Fitur yang tersedia:
 
----
+* Input data pembelian baru
+* Generate invoice otomatis
+* Pengurangan stok otomatis saat pembelian berhasil
+* Cancel pembelian oleh admin
+* Pengembalian stok otomatis saat pembelian dibatalkan
+
+### 3. Chatbot AI
+
+Fitur chatbot digunakan untuk mengirim pertanyaan dan menerima jawaban dari AI.
+
+Chatbot pada project ini menggunakan **Gemini API**. API key disimpan pada file `.env` dan tidak disertakan ke GitHub untuk menjaga keamanan.
+
+Fitur yang tersedia:
+
+* Halaman chatbot sederhana
+* Input pertanyaan dari user
+* Mengirim pertanyaan ke Gemini API
+* Menampilkan jawaban dari Gemini AI
+* Konfigurasi API key melalui file `.env`
+
+## Teknologi yang Digunakan
+
+* Node.js
+* Express.js
+* EJS
+* SQLite menggunakan sql.js
+* Gemini API
+* dotenv
+* HTML
+* CSS
+* JavaScript
 
 ## Struktur Project
 
-```text
-pretest-nodejs-raihan/
+```txt
+admin-page-dan-chatbot/
 ├── app.js
 ├── package.json
+├── package-lock.json
 ├── README.md
 ├── .env.example
 ├── .gitignore
+│
 ├── config/
 │   └── database.js
+│
 ├── database/
 │   └── schema.sql
+│
 ├── routes/
 │   ├── adminRoutes.js
 │   └── chatbotRoutes.js
+│
 ├── services/
 │   └── aiService.js
+│
 ├── views/
 │   ├── index.ejs
 │   ├── error.ejs
+│   │
 │   ├── partials/
-│   │   ├── footer.ejs
-│   │   └── header.ejs
+│   │   ├── header.ejs
+│   │   └── footer.ejs
+│   │
 │   ├── admin/
-│   │   ├── create-purchase.ejs
-│   │   ├── create-product.ejs
 │   │   ├── dashboard.ejs
-│   │   ├── edit-product.ejs
 │   │   ├── products.ejs
-│   │   └── purchases.ejs
+│   │   ├── create-product.ejs
+│   │   ├── edit-product.ejs
+│   │   ├── purchases.ejs
+│   │   └── create-purchase.ejs
+│   │
 │   └── chatbot/
 │       └── index.ejs
+│
 └── public/
     └── css/
         └── style.css
 ```
 
----
-
 ## Persyaratan
 
-- Node.js v18 atau lebih baru
-- npm
+Sebelum menjalankan aplikasi, pastikan perangkat sudah memiliki:
 
----
+* Node.js versi 18 atau lebih baru
+* npm
+* Gemini API Key
 
-## Instalasi
+Gemini API Key diperlukan untuk menjalankan fitur Chatbot AI.
 
-1. Clone repository.
-2. Masuk ke folder proyek.
-3. Install dependensi.
+## Instalasi dan Menjalankan Project
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/RaihanIlhamHabibi/admin-page-dan-chatbot.git
+```
+
+### 2. Masuk ke Folder Project
+
+```bash
+cd admin-page-dan-chatbot
+```
+
+### 3. Install Dependency
 
 ```bash
 npm install
 ```
 
-4. Copy `.env.example` menjadi `.env`.
+### 4. Buat File `.env`
+
+Copy file `.env.example` menjadi `.env`.
+
+Untuk Windows:
 
 ```bash
 copy .env.example .env
 ```
 
-5. Jalankan aplikasi.
+Untuk Mac/Linux:
+
+```bash
+cp .env.example .env
+```
+
+### 5. Isi Konfigurasi `.env`
+
+Buka file `.env`, lalu isi API key Gemini yang valid.
+
+Contoh konfigurasi:
+
+```env
+PORT=3000
+AI_PROVIDER=gemini
+GEMINI_API_KEY=masukkan_api_key_gemini_anda
+GEMINI_MODEL=gemini-1.5-flash
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
+AI_SYSTEM_PROMPT=Jawab dengan bahasa Indonesia yang singkat, jelas, sopan, dan membantu.
+```
+
+### 6. Jalankan Aplikasi
 
 ```bash
 npm start
-```
-
-6. Buka browser.
-
-```text
-http://localhost:3000
 ```
 
 Untuk mode development dengan restart otomatis:
@@ -127,95 +195,110 @@ Untuk mode development dengan restart otomatis:
 npm run dev
 ```
 
----
+### 7. Buka Aplikasi di Browser
 
-## Rute Utama
+```txt
+http://localhost:3000
+```
 
-| Halaman | URL |
-|---|---|
-| Home | `/` |
-| Admin Dashboard | `/admin` |
-| Data Produk | `/admin/products` |
-| Tambah Produk | `/admin/products/create` |
-| Edit Produk | `/admin/products/edit/:id` |
-| Data Pembelian | `/admin/purchases` |
-| Input Pembelian | `/admin/purchases/create` |
-| Chatbot AI | `/chatbot` |
+## Konfigurasi Environment
 
----
+Project ini menggunakan file `.env` untuk menyimpan konfigurasi penting seperti port aplikasi dan API key Gemini.
 
-## Konfigurasi `.env`
+File `.env` tidak di-upload ke GitHub karena berisi data rahasia. Repository hanya menyediakan file `.env.example` sebagai contoh konfigurasi.
 
-Salin `.env.example` menjadi `.env` dan isi value sesuai provider yang digunakan.
-
-> Jangan upload `.env` ke GitHub.
-
-### Contoh dasar
+Contoh isi `.env.example`:
 
 ```env
 PORT=3000
-AI_PROVIDER=demo
+AI_PROVIDER=gemini
+GEMINI_API_KEY=isi_api_key_gemini_anda
+GEMINI_MODEL=gemini-1.5-flash
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
 AI_SYSTEM_PROMPT=Jawab dengan bahasa Indonesia yang singkat, jelas, sopan, dan membantu.
 ```
 
-### OpenAI / ChatGPT
+## Rute Halaman
 
-```env
-AI_PROVIDER=openai
-OPENAI_API_KEY=isi_api_key_openai
-OPENAI_MODEL=gpt-4o-mini
-OPENAI_BASE_URL=https://api.openai.com/v1
+| Halaman         | URL                        |
+| --------------- | -------------------------- |
+| Home            | `/`                        |
+| Admin Dashboard | `/admin`                   |
+| Data Produk     | `/admin/products`          |
+| Tambah Produk   | `/admin/products/create`   |
+| Edit Produk     | `/admin/products/edit/:id` |
+| Data Pembelian  | `/admin/purchases`         |
+| Input Pembelian | `/admin/purchases/create`  |
+| Chatbot AI      | `/chatbot`                 |
+
+## Database
+
+Database menggunakan SQLite melalui library `sql.js`.
+
+Struktur database terdiri dari:
+
+1. Tabel produk
+2. Tabel stok produk
+3. Tabel pembelian
+
+Database sudah dilengkapi data awal berupa **10 produk** sesuai ketentuan pretest.
+
+File database terdapat pada folder:
+
+```txt
+database/schema.sql
 ```
 
-### DeepSeek
+## Alur Aplikasi
 
-```env
-AI_PROVIDER=deepseek
-DEEPSEEK_API_KEY=isi_api_key_deepseek
-DEEPSEEK_MODEL=deepseek-v4-pro
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-```
+### Alur Admin Produk
 
-### Gemini
+1. Admin membuka halaman data produk.
+2. Sistem menampilkan daftar produk beserta stok.
+3. Admin dapat menambahkan produk baru.
+4. Admin dapat mengedit data produk.
+5. Admin dapat menghapus produk.
 
-```env
-AI_PROVIDER=gemini
-GEMINI_API_KEY=isi_api_key_gemini
-GEMINI_MODEL=gemini-1.5-flash
-GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
-```
+### Alur Pembelian
 
-### Ollama Lokal
+1. Admin membuka halaman input pembelian.
+2. Admin memilih produk dan mengisi jumlah pembelian.
+3. Sistem membuat invoice secara otomatis.
+4. Sistem mengurangi stok produk sesuai jumlah pembelian.
+5. Admin dapat membatalkan pembelian.
+6. Jika pembelian dibatalkan, status pembelian berubah menjadi cancel.
+7. Stok produk dikembalikan secara otomatis.
 
-```env
-AI_PROVIDER=ollama
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.2
-```
+### Alur Chatbot AI
 
----
-
-## Catatan
-
-- Provider `demo` tidak memerlukan API key.
-- Provider lain (`openai`, `deepseek`, `gemini`, `ollama`) memerlukan konfigurasi di `.env`.
-- CRUD produk sudah tersedia: tambah, edit, hapus.
-- Pembelian mendukung cancel dengan rollback stok otomatis.
-
----
+1. User membuka halaman chatbot.
+2. User mengirim pertanyaan melalui form chatbot.
+3. Sistem mengirim pertanyaan ke Gemini API.
+4. Gemini API memproses pertanyaan.
+5. Jawaban dari Gemini AI ditampilkan pada halaman chatbot.
 
 ## Struktur Kode
 
-- `app.js`: server, middleware, routing, dan inisialisasi database.
-- `config/database.js`: setup SQLite dan query helper.
-- `routes/adminRoutes.js`: produk dan pembelian admin.
-- `routes/chatbotRoutes.js`: route chatbot.
-- `services/aiService.js`: integrasi provider AI.
-- `views/`: template EJS untuk halaman admin dan chatbot.
+| File / Folder             | Keterangan                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------- |
+| `app.js`                  | File utama untuk menjalankan server, middleware, routing, dan inisialisasi database |
+| `config/database.js`      | Konfigurasi database SQLite dan helper query                                        |
+| `database/schema.sql`     | Struktur database dan data awal produk                                              |
+| `routes/adminRoutes.js`   | Routing untuk fitur produk, stok, pembelian, dan cancel pembelian                   |
+| `routes/chatbotRoutes.js` | Routing untuk halaman chatbot dan proses pengiriman pertanyaan                      |
+| `services/aiService.js`   | Service untuk integrasi chatbot dengan Gemini API                                   |
+| `views/`                  | Template EJS untuk tampilan halaman aplikasi                                        |
+| `public/css/style.css`    | File CSS untuk styling tampilan aplikasi                                            |
 
----
+## Catatan Penting
+
+* Pastikan sudah menjalankan `npm install` sebelum menjalankan aplikasi.
+* Pastikan file `.env` sudah dibuat dari `.env.example`.
+* Pastikan `GEMINI_API_KEY` sudah diisi dengan API key yang valid.
+* File `.env` tidak boleh di-upload ke GitHub.
+* File `.env.example` boleh di-upload karena hanya berisi contoh konfigurasi.
+* Jika aplikasi gagal berjalan, periksa kembali dependency, konfigurasi `.env`, dan API key Gemini.
 
 ## Lisensi
 
-Project ini dibuat untuk keperluan pretest dan latihan. Sesuaikan lisensi bila perlu.
-# admin-page-dan-chatbot
+Project ini dibuat untuk keperluan pretest.
